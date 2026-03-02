@@ -66,15 +66,21 @@ function LoginForm() {
 
   async function handleLogin(email: string) {
     setLoading(`cred-${email}`);
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
     await signIn("credentials", {
       email,
-      callbackUrl: "/dashboard",
+      callbackUrl: `${baseUrl}/dashboard`,
+      redirect: true,
     });
   }
 
   async function handleGoogleLogin() {
     setLoading("google");
-    await signIn("google", { callbackUrl: "/dashboard" });
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+    await signIn("google", {
+      callbackUrl: `${baseUrl}/dashboard`,
+      redirect: true,
+    });
   }
 
   return (
