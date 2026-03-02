@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GraduationCap, Shield, BookOpen, UserCheck, Users, Loader2 } from "lucide-react";
@@ -57,7 +57,7 @@ const devUsers = [
   },
 ];
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
   const [loading, setLoading] = useState<string | null>(null);
@@ -162,5 +162,17 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900">
+        <Loader2 className="h-10 w-10 animate-spin text-white" />
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }
