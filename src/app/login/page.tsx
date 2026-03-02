@@ -1,10 +1,11 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { GraduationCap, Shield, BookOpen, UserCheck, Users, Loader2 } from "lucide-react";
+import { GraduationCap, Shield, BookOpen, UserCheck, Users, Loader2, CheckCircle2 } from "lucide-react";
 
 const devUsers = [
   {
@@ -59,10 +60,13 @@ const devUsers = [
 
 function LoginForm() {
   const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
   const errorParam = searchParams.get("error");
   const [loading, setLoading] = useState<string | null>(null);
 
   const showGoogle = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "true";
+  const isAuthenticated = status === "authenticated" && session;
+  const isLoading = status === "loading";
 
   async function handleLogin(email: string) {
     setLoading(`cred-${email}`);
@@ -78,7 +82,7 @@ function LoginForm() {
     setLoading("google");
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
     await signIn("google", {
-      callbackUrl: `${baseUrl}/dashboard`,
+      callbackUrl: `${baseUrl}/login`,
       redirect: true,
     });
   }
@@ -101,6 +105,36 @@ function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-2">
+          {isLoading ? (
+            <div className="py-12 flex justify-center">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            </div>
+          ) : isAuthenticated ? (
+            <div className="space-y-4 text-center py-4">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+              </div>
+              <p className="font-medium text-foreground">
+                ¡Bienvenido, {session?.user?.name ?? session?.user?.email}!
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Ya estás autenticado. Podés acceder al sistema.
+              </p>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center gap-2 w-full rounded-lg bg-primary px-4 py-3 font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Ir al dashboard
+              </Link>
+              <Link
+                href="/"
+                className="block text-sm text-muted-foreground hover:text-foreground underline"
+              >
+                Volver al inicio
+              </Link>
+            </div>
+          ) : (
+          <>
           {errorParam === "Config" && (
             <div className="mb-4 rounded-md bg-amber-50 border border-amber-200 px-3 py-2">
               <p className="text-sm text-amber-700 text-center">
@@ -172,6 +206,14 @@ function LoginForm() {
               );
             })}
           </div>
+          <Link
+            href="/"
+            className="mt-4 block text-center text-sm text-muted-foreground hover:text-foreground underline"
+          >
+            Volver al inicio
+          </Link>
+          </>
+          )}
         </CardContent>
       </Card>
     </div>
