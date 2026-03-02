@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Paleta Institucional FaCAF ─────────────────────────── */
+  --color-primary: #005B31;
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #004825;
+  --color-primary-light: #e6f3ec;
+
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+
+  --color-accent: #C22026;
+  --color-accent-foreground: #ffffff;
+  --color-accent-light: #fef2f2;
+
+  --color-background: #F3F4F6;
+  --color-foreground: #1F2937;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #1F2937;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #6B7280;
+
+  --color-border: #e5e7eb;
+  --color-input: #d1d5db;
+  --color-ring: #005B31;
+
+  --color-destructive: #C22026;
+  --color-destructive-foreground: #ffffff;
+
+  --color-sidebar-bg: #00391F;
+  --color-sidebar-fg: #d1e7da;
+  --color-sidebar-hover: #004825;
+  --color-sidebar-active: #006B3A;
+  --color-sidebar-muted: #9cbfac;
+  --color-sidebar-border: #004825;
+
+  --color-topbar-bg: #ffffff;
+  --color-topbar-border: #e5e7eb;
+
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-info: #0284c7;
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@layer base {
+  a,
+  [role="button"],
+  [role="tab"],
+  [role="checkbox"],
+  [role="switch"],
+  [role="link"],
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #004825 transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #004825;
+    border-radius: 4px;
+  }
+}
