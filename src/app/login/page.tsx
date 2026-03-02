@@ -101,6 +101,13 @@ function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-2">
+          {errorParam === "Config" && (
+            <div className="mb-4 rounded-md bg-amber-50 border border-amber-200 px-3 py-2">
+              <p className="text-sm text-amber-700 text-center">
+                Error de conexión. Verificá que la base de datos esté activa y las variables de entorno correctas.
+              </p>
+            </div>
+          )}
           {errorParam === "NoAutorizado" && (
             <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2">
               <p className="text-sm text-red-700 text-center">

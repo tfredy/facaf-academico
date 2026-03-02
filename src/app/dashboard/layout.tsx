@@ -7,7 +7,13 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch (err) {
+    console.error("[Dashboard] auth error:", err);
+    redirect("/login?error=Config");
+  }
   if (!session) redirect("/login");
   return <DashboardClientLayout>{children}</DashboardClientLayout>;
 }
